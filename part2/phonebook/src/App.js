@@ -12,13 +12,24 @@ function App() {
     const personObject = {
       name: newName
     }
-    setPersons(persons.concat(personObject))
-    setNewName('')
+    const checkPerson = persons.find(person => person.name.toLowerCase()=== personObject.name.toLowerCase())
+    if (checkPerson) {
+      alert(newName + 'is already listed')
+      setNewName('')
+    }
+    else {
+      setPersons(persons.concat(personObject))
+      setNewName('')
+    }
   }
 
    const handleNameChange = (e) => {
     console.log(e.target.value)
     setNewName(e.target.value)
+   }
+
+   const sameName =(persons, name)=> {
+
    }
 
 
