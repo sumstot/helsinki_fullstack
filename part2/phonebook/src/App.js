@@ -1,12 +1,18 @@
 import {useState} from 'react'
 import Person from './components/Person'
+import Search from './components/Search'
+import Form from './components/Form'
 
 function App() {
   const [persons, setPersons] = useState([
-    {name: 'Arto Hellas', number: '040-123456', id: 1}
+    {name: 'Arto Hellas', number: '040-123456', id: 1},
+    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
   ])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [newSearch, setNewSearch] = useState('')
 
   const addPerson = (e) => {
     e.preventDefault()
@@ -36,21 +42,34 @@ function App() {
     setNewNumber(e.target.value)
   }
 
+  const handleSearchChange = (e) => {
+    setNewSearch(e.target.value)
+    setPersons(filteredPersons)
+  }
 
-
+  const filteredPersons = persons.filter(
+    person => {
+      return (
+        person
+        .name
+        .toLowerCase()
+        .includes(newSearch.toLowerCase()) ||
+        person
+        .email
+        .toLowerCase()
+        .includes(newSearch.toLowerCase())
+      );
+    }
+  );
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange}/>
-        </div>
-        <div>number: <input value={newNumber} onChange={handleNumberChange}/></div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <Search value={newSearch} onChange={handleSearchChange} />
+      <h3>
+        Add a new contact
+      </h3>
+      <Form addPerson={addPerson} newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
       <ul>
         {persons.map(person =>
