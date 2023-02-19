@@ -53,10 +53,6 @@ function App() {
         person
         .name
         .toLowerCase()
-        .includes(newSearch.toLowerCase()) ||
-        person
-        .email
-        .toLowerCase()
         .includes(newSearch.toLowerCase())
       );
     }
