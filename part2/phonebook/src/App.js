@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import Person from './components/Person'
+import Persons from './components/Persons'
 import Search from './components/Search'
 import Form from './components/Form'
 
@@ -67,11 +67,7 @@ function App() {
       </h3>
       <Form addPerson={addPerson} newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <ul>
-        {persons.map(person =>
-          <Person key={person.name} person={person} />
-          )}
-      </ul>
+      <Persons persons={persons} />
     </div>
   );
 }
