@@ -17,7 +17,7 @@ function App() {
         setPersons(initialPersons)
       })
   }, [])
-  
+
   const addPerson = (e) => {
     e.preventDefault()
     const personObject = {
@@ -38,6 +38,11 @@ function App() {
       setNewName('')
       setNewNumber('')
     }
+  }
+
+  const deletePerson = (e) => {
+    e.preventDefault()
+    console.log(e)
   }
 
   const handleNameChange = (e) => {
@@ -74,7 +79,7 @@ function App() {
       </h3>
       <Form addPerson={addPerson} newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <Persons persons={persons} />
+      <Persons persons={persons} deletePerson={deletePerson} />
     </div>
   );
 }
