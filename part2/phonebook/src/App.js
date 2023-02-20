@@ -1,8 +1,8 @@
 import {useState, useEffect} from 'react'
-import axios from 'axios'
 import Persons from './components/Persons'
 import Search from './components/Search'
 import Form from './components/Form'
+import personService from './services/persons'
 
 function App() {
   const [persons, setPersons] = useState([])
@@ -10,22 +10,18 @@ function App() {
   const [newNumber, setNewNumber] = useState('')
   const [newSearch, setNewSearch] = useState('')
 
-  const hook = () => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('fulfilled')
-        setPersons(response.data)
+  useEffect(() => {
+    personService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
-  }
-  useEffect(hook, [])
+  })
   const addPerson = (e) => {
     e.preventDefault()
     const personObject = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1
     }
     const checkPerson = persons.find(person => person.name.toLowerCase() === personObject.name.toLowerCase())
     if (checkPerson) {
@@ -33,7 +29,11 @@ function App() {
       setNewName('')
     }
     else {
-      setPersons(persons.concat(personObject))
+      personService
+        .create(personObject)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+        })
       setNewName('')
       setNewNumber('')
     }
