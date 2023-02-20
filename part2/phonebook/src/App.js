@@ -16,7 +16,8 @@ function App() {
       .then(initialPersons => {
         setPersons(initialPersons)
       })
-  })
+  }, [])
+  
   const addPerson = (e) => {
     e.preventDefault()
     const personObject = {
