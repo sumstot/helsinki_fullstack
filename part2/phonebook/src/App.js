@@ -5,12 +5,21 @@ import Search from './components/Search'
 import Form from './components/Form'
 
 function App() {
-  const [persons, setPersons] = useState([
-  ])
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newSearch, setNewSearch] = useState('')
 
+  const hook = () => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('fulfilled')
+        setPersons(response.data)
+      })
+  }
+  useEffect(hook, [])
   const addPerson = (e) => {
     e.preventDefault()
     const personObject = {
