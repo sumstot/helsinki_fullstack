@@ -40,11 +40,6 @@ function App() {
     }
   }
 
-  const deletePerson = (e) => {
-    e.preventDefault()
-    console.log(e)
-  }
-
   const handleNameChange = (e) => {
   console.log(e.target.value)
   setNewName(e.target.value)
@@ -57,6 +52,20 @@ function App() {
   const handleSearchChange = (e) => {
     setNewSearch(e.target.value)
     setPersons(filteredPersons)
+  }
+
+  const deletePerson = (id) => {
+    
+    const person = persons.find(n => n.id === id)
+    const confirmDel = window.confirm(`Are you sure you want to delete ${person.name}`)
+    if (confirmDel) {
+      personService
+        .destroy(id)
+        .then(returnedPerson => {
+          persons.map(person => person.id !== id ? person : returnedPerson)
+        })
+        setPersons(persons.filter(person => person.id !== id))
+    }
   }
 
   const filteredPersons = persons.filter(

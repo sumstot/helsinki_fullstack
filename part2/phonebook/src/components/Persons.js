@@ -3,7 +3,7 @@ const Persons = ({persons, deletePerson}) =>{
     <ul>
       {persons.map(person =>
         <li key={person.name}> {person.name} - {person.number}
-        <button onClick={deletePerson}>Delete</button>
+        <button onClick={() => deletePerson(person.id)}>Delete</button>
         </li>
 
       )}
