@@ -2,6 +2,7 @@ import {useState, useEffect} from 'react'
 import Persons from './components/Persons'
 import Search from './components/Search'
 import Form from './components/Form'
+import Notification from './components/Notification'
 import personService from './services/persons'
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newSearch, setNewSearch] = useState('')
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     personService
@@ -26,7 +28,13 @@ function App() {
     }
     const checkPerson = persons.find(person => person.name.toLowerCase() === personObject.name.toLowerCase())
     if (checkPerson) {
-      alert(newName + 'is already listed')
+      setNotification({
+        text: `${newName} is already listed`,
+        type: 'notification'
+      })
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000);
       setNewName('')
     }
     else {
@@ -34,6 +42,13 @@ function App() {
         .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
+          setNotification({
+            text: `${returnedPerson.name} was added to the phonebook`,
+            type: 'notification-add'
+          })
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000);
         })
       setNewName('')
       setNewNumber('')
@@ -41,7 +56,6 @@ function App() {
   }
 
   const handleNameChange = (e) => {
-  console.log(e.target.value)
   setNewName(e.target.value)
   }
 
@@ -55,7 +69,7 @@ function App() {
   }
 
   const deletePerson = (id) => {
-    
+
     const person = persons.find(n => n.id === id)
     const confirmDel = window.confirm(`Are you sure you want to delete ${person.name}`)
     if (confirmDel) {
@@ -65,6 +79,13 @@ function App() {
           persons.map(person => person.id !== id ? person : returnedPerson)
         })
         setPersons(persons.filter(person => person.id !== id))
+        setNotification({
+          text: `${person.name} was deleted from the phonebook`,
+          type: 'notification'
+        })
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000);
     }
   }
 
@@ -82,6 +103,7 @@ function App() {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification notification={notification} />
       <Search value={newSearch} onChange={handleSearchChange} />
       <h3>
         Add a new contact
